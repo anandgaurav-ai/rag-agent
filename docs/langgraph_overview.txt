@@ -1,0 +1,27 @@
+LangGraph is a framework for building stateful, multi-agent applications with LLMs.
+
+Key Features:
+1. State Management: LangGraph uses a typed state dictionary (AgentState) shared across all nodes. The state is the central data structure that flows through the graph, allowing nodes to read and write data.
+
+2. Graph-Based Architecture: Workflows are defined as graphs with nodes and edges. Nodes are Python functions that process state, and edges define the flow between nodes. This makes complex agent workflows visual and debuggable.
+
+3. Conditional Routing: LangGraph supports conditional edges where the next node is determined at runtime based on the current state. This enables dynamic decision-making within agent workflows.
+
+4. Checkpointing: LangGraph can save the full graph state after every node execution using checkpointers like MemorySaver or SqliteSaver. This enables conversation persistence across sessions and human-in-the-loop workflows.
+
+5. Human-in-the-Loop (HITL): Using interrupt_before, LangGraph can pause execution before sensitive nodes, wait for human approval, then resume. This is critical for production agents that perform irreversible actions.
+
+6. Multi-Agent Support: LangGraph enables multiple specialised agents to work together. Each agent is a separate node with its own system prompt and tools, coordinated by an orchestrator through the shared state.
+
+7. Tool Integration: Tools are defined using the @tool decorator and bound to the LLM using bind_tools(). The LLM decides when to call tools, and tool results are automatically added to the state as ToolMessages.
+
+8. Built-in Persistence: Through SqliteSaver and PostgresSaver, agent conversations persist across application restarts. Each conversation is identified by a unique thread_id.
+
+Pricing:
+LangGraph is open source and free to use. LangGraph Platform (for deployment) has a free tier and paid plans starting at $20/month.
+
+Common Use Cases:
+- Customer support agents with escalation workflows
+- Research assistants that search, summarise, and report
+- Code review agents with approval gates
+- Multi-step data analysis pipelines
