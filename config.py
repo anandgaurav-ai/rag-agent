@@ -15,5 +15,5 @@ CHROMA_PATH = "./chroma_db"
 COLLECTION_NAME = "documents"
 
 # ── Retrieval ──────────────────────────────────────────────────
-TOP_K = 3 # number of chunks to retrieve
+TOP_K = 5 # number of chunks to retrieve
 
