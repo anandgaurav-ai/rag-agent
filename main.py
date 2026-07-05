@@ -22,6 +22,8 @@ def main():
         "How does human-in-the-loop work in LangGraph?",
         "What are the common use cases of LangGraph?",
         "How does LangGraph handle multi-agent workflows?",
+        "How much does the Developer plan cost?",          # NEW — tests PDF table
+        "What support level does the Team plan get?",       # NEW — tests PDF table
     ]
 
     for q in questions:
