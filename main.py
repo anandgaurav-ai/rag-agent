@@ -5,29 +5,28 @@ os.system("chcp 65001 > nul")
 sys.stdout.reconfigure(encoding="utf-8")
 
 from indexer import index_documents
-from rag_chain import ask
+from agent import ask_agent
 
 def main():
-    print("="*50)
-    print("RAG Pipeline — Document Q&A")
-    print("="*50)
+    print("="*60)
+    print("RAG Agent — Document Q&A with Agentic Retrieval")
+    print("="*60)
 
-    # Step 1 — Index documents (only needed once, or when docs change)
+    # Index documents (run once, or when docs change)
     index_documents()
 
-    # Step 2 — Ask questions
+    # Test with a MIX of questions — some need retrieval, some don't
     questions = [
-        "What is checkpointing in LangGraph?",
-        "How much does LangGraph cost?",
-        "How does human-in-the-loop work in LangGraph?",
-        "What are the common use cases of LangGraph?",
-        "How does LangGraph handle multi-agent workflows?",
-        "How much does the Developer plan cost?",          # NEW — tests PDF table
-        "What support level does the Team plan get?",       # NEW — tests PDF table
+        "Hi there!",                                          # NO retrieval expected
+        "Thanks, that's helpful!",                             # NO retrieval expected
+        "What is checkpointing in LangGraph?",                 # retrieval expected
+        "How much does the Developer plan cost?",              # retrieval expected
+        "What is 20% of 99?",                                  # calculator expected
+        "If the Team plan costs $99/month, what's the annual cost?",  # retrieval + calculator
     ]
 
     for q in questions:
-        ask(q)
+        ask_agent(q)
 
 if __name__ == "__main__":
     main()
