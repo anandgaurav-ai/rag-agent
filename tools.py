@@ -1,5 +1,42 @@
 from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
 from retriever import retrieve
+from config import MODEL_NAME, OPENAI_API_KEY
+
+grader_llm = ChatOpenAI(model = MODEL_NAME, api_key = OPENAI_API_KEY, temperature = 0)
+
+GRADER_PROMPT = """You are a strict relevance grader.
+
+Given a user question and retrieved document chunks, determine if
+the chunks contain information that can answer the question.
+
+QUESTION: {question}
+
+RETRIEVED CHUNKS:
+{chunks}
+
+Respond in EXACTLY this format:
+VERDICT: [relevant/not_relevant]
+REASON: [one sentence explanation]"""
+
+def grade_relevance(question: str, chunks_text: str) -> dict:
+    """Grade whether retrieved chunks can answer the question."""
+    prompt = GRADER_PROMPT.format(question = question, chunks = chunks_text)
+    response = grader_llm.invoke(prompt)
+    raw = response.content
+    
+    verdict = "not_relevant" # safe default
+    reason = raw
+
+    try:
+        if "VERDICT:" in raw:
+            verdict = raw.split("VERDICT:")[1].split("REASON:")[0].strip().lower()
+            reason = raw.split("REASON:")[1].strip()
+    except Exception:
+        pass
+
+    return {"verdict": verdict, "reason": reason}
+
 
 @tool
 def search_documents(query: str) -> str:
